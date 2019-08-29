@@ -1,9 +1,10 @@
-package com.invictusbytes.gemaries
+package com.invictusbytes.gemaries.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.invictusbytes.gemaries.R
+import dagger.android.support.DaggerAppCompatActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
