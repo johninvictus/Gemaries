@@ -5,13 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import com.invictusbytes.gemaries.R
 import com.invictusbytes.gemaries.adapters.ViewPagerAdapter
+import com.invictusbytes.gemaries.commons.BaseActivity
 import com.invictusbytes.gemaries.ui.all_clients.AllClientsFragment
 import com.invictusbytes.gemaries.ui.assigned_clients.AssignedClientsFragment
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_clients.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class ClientsActivity : DaggerAppCompatActivity() {
+class ClientsActivity : BaseActivity() {
+
+
+    lateinit var viewModel: ClientsViewModel
 
 
     companion object {
@@ -23,6 +26,8 @@ class ClientsActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_clients)
+
+        viewModel = getViewModel(ClientsViewModel::class.java)
 
         setupToolbar()
         setupTabLayout()

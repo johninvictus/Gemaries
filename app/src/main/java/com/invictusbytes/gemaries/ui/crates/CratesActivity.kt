@@ -8,11 +8,12 @@ import com.invictusbytes.gemaries.adapters.ViewPagerAdapter
 import com.invictusbytes.gemaries.commons.BaseActivity
 import com.invictusbytes.gemaries.ui.assigned.AssignedFragment
 import com.invictusbytes.gemaries.ui.unassigned.UnassignedFragment
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_crates.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class CratesActivity : BaseActivity() {
+
+    lateinit var viewModel: CratesViewModel
 
     companion object {
         fun startActivity(ctx: Context) {
@@ -23,6 +24,8 @@ class CratesActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crates)
+
+        viewModel = getViewModel(CratesViewModel::class.java)
 
         setupToolbar()
         setupTabLayout()
