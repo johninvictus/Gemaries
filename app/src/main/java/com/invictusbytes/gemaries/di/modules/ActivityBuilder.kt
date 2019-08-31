@@ -1,5 +1,7 @@
 package com.invictusbytes.gemaries.di.modules
 
+import com.invictusbytes.gemaries.di.fragment_modules.FragmentClientsModule
+import com.invictusbytes.gemaries.di.fragment_modules.FragmentCratesModule
 import com.invictusbytes.gemaries.ui.MainActivity
 import com.invictusbytes.gemaries.ui.clients.ClientsActivity
 import com.invictusbytes.gemaries.ui.crates.CratesActivity
@@ -13,10 +15,10 @@ abstract class ActivityBuilder {
     @ContributesAndroidInjector
     internal abstract fun bindMainActivity(): MainActivity
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [FragmentCratesModule::class])
     internal abstract fun bindCratesActivity(): CratesActivity
 
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [FragmentClientsModule::class])
     internal abstract fun bindClientsActivity(): ClientsActivity
 }

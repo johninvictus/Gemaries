@@ -7,11 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.invictusbytes.gemaries.R
+import com.invictusbytes.gemaries.commons.BaseFragment
 
 /**
  * A simple [Fragment] subclass.
  */
-class AssignedFragment : Fragment() {
+class AssignedFragment : BaseFragment() {
 
     companion object {
         @JvmStatic

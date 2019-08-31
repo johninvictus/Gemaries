@@ -5,13 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import com.invictusbytes.gemaries.R
 import com.invictusbytes.gemaries.adapters.ViewPagerAdapter
+import com.invictusbytes.gemaries.commons.BaseActivity
 import com.invictusbytes.gemaries.ui.assigned.AssignedFragment
 import com.invictusbytes.gemaries.ui.unassigned.UnassignedFragment
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_crates.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class CratesActivity : DaggerAppCompatActivity() {
+class CratesActivity : BaseActivity() {
 
     companion object {
         fun startActivity(ctx: Context) {
