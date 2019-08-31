@@ -7,11 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.invictusbytes.gemaries.R
+import com.invictusbytes.gemaries.commons.BaseFragment
 
 /**
  * A simple [Fragment] subclass.
  */
-class AssignedFragment : Fragment() {
+class AssignedFragment : BaseFragment() {
+
+    lateinit var viewModel: AssignedViewModel
 
     companion object {
         @JvmStatic
@@ -25,6 +28,11 @@ class AssignedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_assigned, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = getViewModel(AssignedViewModel::class.java)
     }
 
 

@@ -7,11 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.invictusbytes.gemaries.R
+import com.invictusbytes.gemaries.commons.BaseFragment
 
-/**
- * A simple [Fragment] subclass.
- */
-class UnassignedFragment : Fragment() {
+
+class UnassignedFragment : BaseFragment() {
+
+    lateinit var viewModel: UnassignedViewModel
 
     companion object {
         @JvmStatic
@@ -24,8 +25,13 @@ class UnassignedFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_unassigned, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel = getViewModel(UnassignedViewModel::class.java)
     }
 
 

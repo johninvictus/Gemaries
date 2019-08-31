@@ -5,13 +5,18 @@ import android.content.Intent
 import android.os.Bundle
 import com.invictusbytes.gemaries.R
 import com.invictusbytes.gemaries.adapters.ViewPagerAdapter
+import com.invictusbytes.gemaries.commons.BaseActivity
+import com.invictusbytes.gemaries.data.db.entities.CratesEntity
 import com.invictusbytes.gemaries.ui.assigned.AssignedFragment
 import com.invictusbytes.gemaries.ui.unassigned.UnassignedFragment
-import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_crates.*
 import kotlinx.android.synthetic.main.toolbar.*
+import org.jetbrains.anko.toast
+import java.util.*
 
-class CratesActivity : DaggerAppCompatActivity() {
+class CratesActivity : BaseActivity() {
+
+    lateinit var viewModel: CratesViewModel
 
     companion object {
         fun startActivity(ctx: Context) {
@@ -23,8 +28,11 @@ class CratesActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crates)
 
+        viewModel = getViewModel(CratesViewModel::class.java)
+
         setupToolbar()
         setupTabLayout()
+        operations()
     }
 
     private fun setupToolbar() {
@@ -44,4 +52,21 @@ class CratesActivity : DaggerAppCompatActivity() {
 
         viewPager.adapter = pagerAdapter
     }
+
+
+    private fun operations() {
+        viewModel.allCrate().observe(this, androidx.lifecycle.Observer {
+            toast(it.toString())
+        })
+
+        val c = CratesEntity(code = "gdsh3j2j3", created = Date())
+        viewModel.addCrate(c)
+    }
+
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
+    }
+
 }

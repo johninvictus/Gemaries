@@ -3,6 +3,7 @@ package com.invictusbytes.gemaries.ui
 import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.invictusbytes.gemaries.R
+import com.invictusbytes.gemaries.ui.clients.ClientsActivity
 import com.invictusbytes.gemaries.ui.crates.CratesActivity
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -32,6 +33,11 @@ class MainActivity : DaggerAppCompatActivity() {
     private fun operations() {
         btnCrates.setOnClickListener {
             CratesActivity.startActivity(this)
+            overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+        }
+
+        btnClients.setOnClickListener {
+            ClientsActivity.startActivity(this)
             overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
         }
     }
