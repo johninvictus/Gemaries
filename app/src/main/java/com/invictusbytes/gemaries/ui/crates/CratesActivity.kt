@@ -6,10 +6,13 @@ import android.os.Bundle
 import com.invictusbytes.gemaries.R
 import com.invictusbytes.gemaries.adapters.ViewPagerAdapter
 import com.invictusbytes.gemaries.commons.BaseActivity
+import com.invictusbytes.gemaries.data.db.entities.CratesEntity
 import com.invictusbytes.gemaries.ui.assigned.AssignedFragment
 import com.invictusbytes.gemaries.ui.unassigned.UnassignedFragment
 import kotlinx.android.synthetic.main.activity_crates.*
 import kotlinx.android.synthetic.main.toolbar.*
+import org.jetbrains.anko.toast
+import java.util.*
 
 class CratesActivity : BaseActivity() {
 
@@ -29,6 +32,7 @@ class CratesActivity : BaseActivity() {
 
         setupToolbar()
         setupTabLayout()
+        operations()
     }
 
     private fun setupToolbar() {
@@ -48,6 +52,17 @@ class CratesActivity : BaseActivity() {
 
         viewPager.adapter = pagerAdapter
     }
+
+
+    private fun operations() {
+        viewModel.allCrate().observe(this, androidx.lifecycle.Observer {
+            toast(it.toString())
+        })
+
+        val c = CratesEntity(code = "gdsh3j2j3", created = Date())
+        viewModel.addCrate(c)
+    }
+
 
     override fun finish() {
         super.finish()

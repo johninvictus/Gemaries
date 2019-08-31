@@ -1,0 +1,23 @@
+package com.invictusbytes.gemaries.data.repository
+
+import android.os.AsyncTask
+import androidx.lifecycle.LiveData
+import com.invictusbytes.gemaries.data.db.dao.CratesDao
+import com.invictusbytes.gemaries.data.db.entities.CratesEntity
+import com.invictusbytes.gemaries.utils.AppExecutors
+import javax.inject.Inject
+
+class CratesRepository @Inject constructor(var cratesDao: CratesDao, var appExecutors: AppExecutors) {
+
+
+    fun addCrate(crate: CratesEntity) {
+
+        appExecutors.diskIO().execute {
+            this@CratesRepository.cratesDao.addCrate(crate)
+        }
+    }
+
+    fun getAllCrates(): LiveData<List<CratesEntity>> {
+        return cratesDao.getAllCrates()
+    }
+}
