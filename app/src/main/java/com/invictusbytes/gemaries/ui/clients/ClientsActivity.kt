@@ -1,53 +1,54 @@
-package com.invictusbytes.gemaries.ui.crates
+package com.invictusbytes.gemaries.ui.clients
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.invictusbytes.gemaries.R
 import com.invictusbytes.gemaries.adapters.ViewPagerAdapter
-import com.invictusbytes.gemaries.ui.assigned.AssignedFragment
-import com.invictusbytes.gemaries.ui.unassigned.UnassignedFragment
+import com.invictusbytes.gemaries.ui.all_clients.AllClientsFragment
+import com.invictusbytes.gemaries.ui.assigned_clients.AssignedClientsFragment
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.activity_crates.*
+import kotlinx.android.synthetic.main.activity_clients.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class CratesActivity : DaggerAppCompatActivity() {
+class ClientsActivity : DaggerAppCompatActivity() {
+
 
     companion object {
-        fun startActivity(ctx: Context) {
-            ctx.startActivity(Intent(ctx, CratesActivity::class.java))
+        fun startActivity(context: Context) {
+            context.startActivity(Intent(context, ClientsActivity::class.java))
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_crates)
+        setContentView(R.layout.activity_clients)
 
         setupToolbar()
         setupTabLayout()
     }
 
+
     private fun setupToolbar() {
         setSupportActionBar(toolbar)
-        supportActionBar?.title = "Crates"
+        supportActionBar?.title = "Clients"
     }
 
     private fun setupTabLayout() {
-        tabLayout.setupWithViewPager(viewPager)
+        tabLayoutClients.setupWithViewPager(viewPagerClients)
         setupViewPager()
     }
 
     private fun setupViewPager() {
         val pagerAdapter = ViewPagerAdapter(supportFragmentManager)
-        pagerAdapter.addFragment("Assigned", AssignedFragment.newInstance())
-        pagerAdapter.addFragment("Unassigned", UnassignedFragment.newInstance())
+        pagerAdapter.addFragment("Assigned", AssignedClientsFragment.newInstance())
+        pagerAdapter.addFragment("All Clients", AllClientsFragment.newInstance())
 
-        viewPager.adapter = pagerAdapter
+        viewPagerClients.adapter = pagerAdapter
     }
 
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
     }
-
 }
