@@ -14,6 +14,8 @@ import com.invictusbytes.gemaries.commons.BaseFragment
  */
 class AssignedFragment : BaseFragment() {
 
+    lateinit var viewModel: AssignedViewModel
+
     companion object {
         @JvmStatic
         fun newInstance(): Fragment {
@@ -26,6 +28,11 @@ class AssignedFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_assigned, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = getViewModel(AssignedViewModel::class.java)
     }
 
 
