@@ -18,4 +18,11 @@ class CratesViewModel @Inject constructor(var cratesRepository: CratesRepository
         return cratesRepository.getAllCrates()
     }
 
+    fun assignedCrates(): LiveData<List<CratesEntity>> {
+        return cratesRepository.getAssignedCrates()
+    }
+
+    fun unAssignedCrates(): LiveData<List<CratesEntity>> {
+        return cratesRepository.getUnAssignedCrates()
+    }
 }
