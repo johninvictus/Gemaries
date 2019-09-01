@@ -55,12 +55,7 @@ class CratesActivity : BaseActivity() {
 
 
     private fun operations() {
-        viewModel.unAssignedCrates().observe(this, androidx.lifecycle.Observer {
-            toast(it.toString())
-        })
 
-//        val c = CratesEntity(code = "gdsh3j2j3", created = Date())
-//        viewModel.addCrate(c)
     }
 
 

@@ -8,21 +8,4 @@ import javax.inject.Inject
 
 class CratesViewModel @Inject constructor(var cratesRepository: CratesRepository) :
     ViewModel() {
-
-    fun addCrate(crate: CratesEntity) {
-        cratesRepository.addCrate(crate)
-    }
-
-
-    fun allCrate(): LiveData<List<CratesEntity>> {
-        return cratesRepository.getAllCrates()
-    }
-
-    fun assignedCrates(): LiveData<List<CratesEntity>> {
-        return cratesRepository.getAssignedCrates()
-    }
-
-    fun unAssignedCrates(): LiveData<List<CratesEntity>> {
-        return cratesRepository.getUnAssignedCrates()
-    }
 }
