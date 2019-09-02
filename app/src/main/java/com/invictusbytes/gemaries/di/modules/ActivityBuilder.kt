@@ -5,6 +5,7 @@ import com.invictusbytes.gemaries.di.fragment_modules.FragmentCratesModule
 import com.invictusbytes.gemaries.ui.MainActivity
 import com.invictusbytes.gemaries.ui.clients.ClientsActivity
 import com.invictusbytes.gemaries.ui.crates.CratesActivity
+import com.invictusbytes.gemaries.ui.scanner.ScannerActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -21,4 +22,7 @@ abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules = [FragmentClientsModule::class])
     internal abstract fun bindClientsActivity(): ClientsActivity
+
+    @ContributesAndroidInjector
+    internal abstract fun bindScannerActivity(): ScannerActivity
 }

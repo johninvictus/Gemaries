@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.invictusbytes.gemaries">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:name=".GemariesApp"
         android:allowBackup="true"
@@ -12,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.clients.ClientsActivity"></activity>
+        <activity android:name=".ui.scanner.ScannerActivity" />
+        <activity android:name=".ui.clients.ClientsActivity" />
         <activity android:name=".ui.crates.CratesActivity" />
         <activity android:name=".ui.MainActivity">
             <intent-filter>

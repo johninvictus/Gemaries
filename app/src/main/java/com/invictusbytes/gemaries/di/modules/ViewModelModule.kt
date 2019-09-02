@@ -6,6 +6,7 @@ import com.invictusbytes.gemaries.di.qualifires.ViewModelKey
 import com.invictusbytes.gemaries.ui.assigned.AssignedViewModel
 import com.invictusbytes.gemaries.ui.clients.ClientsViewModel
 import com.invictusbytes.gemaries.ui.crates.CratesViewModel
+import com.invictusbytes.gemaries.ui.scanner.ScannerViewModel
 import com.invictusbytes.gemaries.ui.unassigned.UnassignedViewModel
 import com.invictusbytes.gemaries.vo.GemariesViewModelFactory
 import dagger.Binds
@@ -36,6 +37,13 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(UnassignedViewModel::class)
     abstract fun bindUnassignedViewModel(unassignedViewModel: UnassignedViewModel): ViewModel
+
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ScannerViewModel::class)
+    abstract fun bindScannerViewModel(scannerViewModel: ScannerViewModel): ViewModel
+
 
     @Binds
     abstract fun bindViewModelFactory(factory: GemariesViewModelFactory): ViewModelProvider.Factory
