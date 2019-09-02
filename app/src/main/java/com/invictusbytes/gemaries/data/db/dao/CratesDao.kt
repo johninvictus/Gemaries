@@ -12,6 +12,10 @@ interface CratesDao {
     fun addCrate(cratesEntity: CratesEntity): Long
 
 
+    @Query("SELECT * FROM Crates WHERE code = :code")
+    fun getCrateByCode(code: String): LiveData<CratesEntity>
+
+
     @Query("SELECT * FROM Crates ")
     fun getAllCrates(): LiveData<List<CratesEntity>>
 
@@ -30,8 +34,8 @@ interface CratesDao {
         "SELECT c.id, c.code, c.created FROM Crates c " +
                 "LEFT JOIN  Assigned a " +
                 "ON c.id = a.crate_id " +
-                "WHERE a.crate_id IS NULL OR a.active = :active"
+                "WHERE a.crate_id IS NULL OR a.active = :active " +
+                "ORDER BY c.created DESC"
     )
     fun getUnAssignedCrates(active: Boolean): LiveData<List<CratesEntity>>
-
 }

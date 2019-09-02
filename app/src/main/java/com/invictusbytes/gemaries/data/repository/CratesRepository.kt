@@ -19,6 +19,10 @@ class CratesRepository @Inject constructor(
         }
     }
 
+    fun getCrateByCode(code: String): LiveData<CratesEntity> {
+        return cratesDao.getCrateByCode(code)
+    }
+
     fun getAllCrates(): LiveData<List<CratesEntity>> {
         return cratesDao.getAllCrates()
     }
