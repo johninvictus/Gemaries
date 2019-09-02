@@ -6,8 +6,8 @@ import android.os.Bundle
 import com.invictusbytes.gemaries.R
 import com.invictusbytes.gemaries.adapters.ViewPagerAdapter
 import com.invictusbytes.gemaries.commons.BaseActivity
-import com.invictusbytes.gemaries.ui.all_clients.AllClientsFragment
 import com.invictusbytes.gemaries.ui.assigned_clients.AssignedClientsFragment
+import com.invictusbytes.gemaries.ui.unassigned_clients.UnAssignedClientsFragment
 import kotlinx.android.synthetic.main.activity_clients.*
 import kotlinx.android.synthetic.main.toolbar.*
 
@@ -47,7 +47,7 @@ class ClientsActivity : BaseActivity() {
     private fun setupViewPager() {
         val pagerAdapter = ViewPagerAdapter(supportFragmentManager)
         pagerAdapter.addFragment("Assigned", AssignedClientsFragment.newInstance())
-        pagerAdapter.addFragment("All Clients", AllClientsFragment.newInstance())
+        pagerAdapter.addFragment("Unassigned", UnAssignedClientsFragment.newInstance())
 
         viewPagerClients.adapter = pagerAdapter
     }

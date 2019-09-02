@@ -1,4 +1,4 @@
-package com.invictusbytes.gemaries.ui.assigned_clients
+package com.invictusbytes.gemaries.ui.unassigned_clients
 
 
 import android.os.Bundle
@@ -11,22 +11,23 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.invictusbytes.gemaries.R
 import com.invictusbytes.gemaries.adapters.ClientsAdapter
-import kotlinx.android.synthetic.main.fragment_assigned_clients.*
+import kotlinx.android.synthetic.main.fragment_unassigned_clients.*
 
 /**
  * A simple [Fragment] subclass.
  */
-class AssignedClientsFragment : Fragment() {
-
+class UnAssignedClientsFragment : Fragment() {
 
     private lateinit var adapter: ClientsAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_assigned_clients, container, false)
+        return inflater.inflate(R.layout.fragment_unassigned_clients, container, false)
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,11 +45,11 @@ class AssignedClientsFragment : Fragment() {
 
     private fun setupAdapter() {
         adapter = ClientsAdapter("assigned")
-        assignedClientRecycler.layoutManager = LinearLayoutManager(activity!!)
-        assignedClientRecycler.adapter = adapter
+        unAssignedClientRecycler.layoutManager = LinearLayoutManager(activity!!)
+        unAssignedClientRecycler.adapter = adapter
 
-        assignedClientRecycler.itemAnimator = DefaultItemAnimator()
-        assignedClientRecycler.addItemDecoration(
+        unAssignedClientRecycler.itemAnimator = DefaultItemAnimator()
+        unAssignedClientRecycler.addItemDecoration(
             DividerItemDecoration(
                 activity,
                 LinearLayoutManager.VERTICAL
@@ -59,7 +60,7 @@ class AssignedClientsFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(): Fragment {
-            return AssignedClientsFragment()
+            return UnAssignedClientsFragment()
         }
     }
 }
