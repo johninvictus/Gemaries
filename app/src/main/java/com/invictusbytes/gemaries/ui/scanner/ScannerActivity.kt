@@ -7,17 +7,18 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
 import android.view.View
-import androidx.lifecycle.Observer
 import com.google.zxing.Result
 import com.invictusbytes.gemaries.R
 import com.invictusbytes.gemaries.commons.BaseActivity
 import com.invictusbytes.gemaries.data.db.entities.CratesEntity
+import com.invictusbytes.gemaries.utils.AppExecutors
 import kotlinx.android.synthetic.main.activity_scanner.*
 import kotlinx.android.synthetic.main.toolbar.*
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.toast
 import java.util.*
+import javax.inject.Inject
 
 class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
 
@@ -25,6 +26,10 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
     lateinit var viewModel: ScannerViewModel
     private var scannerView: ZXingScannerView? = null
     private var flash: Boolean = false
+
+
+    @Inject
+    lateinit var appExecutors: AppExecutors
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,17 +84,21 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
     }
 
     private fun addCrate(code: String) {
-        viewModel.getCrate(code).observe(this, Observer {
-            if (it != null) {
-                longToast("This crate is already added")
-                return@Observer
+        appExecutors.diskIO().execute {
+            val c = viewModel.getCrate(code)
+            if (c != null) {
+                appExecutors.mainThread().execute {
+                    longToast("This crate is already added")
+                }
+            } else {
+                val crate = CratesEntity(code = code, created = Date())
+                viewModel.addCrate(crate)
+
+                appExecutors.mainThread().execute {
+                    toast("You added this crate")
+                }
             }
-
-            val crate = CratesEntity(code = code, created = Date())
-            viewModel.addCrate(crate)
-
-            toast("You added this crate")
-        })
+        }
     }
 
     override fun handleResult(rawResult: Result) {

@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class ScannerViewModel @Inject constructor(var cratesRepository: CratesRepository) : ViewModel() {
 
-    fun getCrate(code: String): LiveData<CratesEntity> {
+    fun getCrate(code: String): CratesEntity? {
         return cratesRepository.getCrateByCode(code)
     }
 

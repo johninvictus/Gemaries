@@ -13,7 +13,7 @@ interface CratesDao {
 
 
     @Query("SELECT * FROM Crates WHERE code = :code")
-    fun getCrateByCode(code: String): LiveData<CratesEntity>
+    fun getCrateByCode(code: String): CratesEntity?
 
 
     @Query("SELECT * FROM Crates ")

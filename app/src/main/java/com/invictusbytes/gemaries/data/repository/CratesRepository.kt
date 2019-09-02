@@ -19,7 +19,7 @@ class CratesRepository @Inject constructor(
         }
     }
 
-    fun getCrateByCode(code: String): LiveData<CratesEntity> {
+    fun getCrateByCode(code: String): CratesEntity?{
         return cratesDao.getCrateByCode(code)
     }
 
