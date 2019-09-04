@@ -6,13 +6,14 @@ import android.os.Bundle
 import com.invictusbytes.gemaries.R
 import com.invictusbytes.gemaries.adapters.ViewPagerAdapter
 import com.invictusbytes.gemaries.commons.BaseActivity
+import com.invictusbytes.gemaries.data.db.entities.UsersEntity
 import com.invictusbytes.gemaries.ui.assigned_clients.AssignedClientsFragment
 import com.invictusbytes.gemaries.ui.dialogs.AddClientFragmentDialog
 import com.invictusbytes.gemaries.ui.unassigned_clients.UnAssignedClientsFragment
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_clients.*
 import kotlinx.android.synthetic.main.toolbar.*
-import timber.log.Timber
+import java.util.*
 
 class ClientsActivity : BaseActivity() {
 
@@ -67,7 +68,13 @@ class ClientsActivity : BaseActivity() {
     private fun listenDialog() {
         val event =
             dialog.clientDialogEvent.subscribe {
-                Timber.e(it.toString())
+                viewModel.addClient(
+                    UsersEntity(
+                        name = it.first,
+                        phone = it.second,
+                        created = Date()
+                    )
+                )
             }
 
         compositeDisposable.add(event)

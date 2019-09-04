@@ -55,8 +55,14 @@ class AddClientFragmentDialog : DialogFragment() {
         }
 
         clientDialogEvent.onNext(Pair(name, phone.toInt()))
-        dismiss()
 
+        /*
+        * clear previous text
+        * */
+        etClientPhone.text = null
+        etClientName.text = null
+
+        dismiss()
     }
 
     override fun onResume() {
