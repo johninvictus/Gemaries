@@ -13,13 +13,12 @@ class CratesRepository @Inject constructor(
 
 
     fun addCrate(crate: CratesEntity) {
-
         appExecutors.diskIO().execute {
-            this@CratesRepository.cratesDao.addCrate(crate)
+            cratesDao.addCrate(crate)
         }
     }
 
-    fun getCrateByCode(code: String): LiveData<CratesEntity> {
+    fun getCrateByCode(code: String): CratesEntity? {
         return cratesDao.getCrateByCode(code)
     }
 
@@ -34,4 +33,23 @@ class CratesRepository @Inject constructor(
     fun getUnAssignedCrates(): LiveData<List<CratesEntity>> {
         return cratesDao.getUnAssignedCrates(false)
     }
+
+    fun getUserAssignedCrates(userId: Long): LiveData<List<CratesEntity>> {
+        return cratesDao.getUserAssignedCrates(userId, true)
+    }
+
+    fun getCrateIfAssigned(code: String): CratesEntity? {
+        return cratesDao.getCrateIfAssigned(true, code)
+    }
+
+    fun getCrateIfAssignedToUser(code: String, userId: Long): CratesEntity? {
+        return cratesDao.getCrateIfAssignedToUser(true, code, userId)
+    }
+
+    fun deleteCrate(crate: CratesEntity) {
+        appExecutors.diskIO().execute {
+            cratesDao.deleteCrates(crate)
+        }
+    }
+
 }

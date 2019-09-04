@@ -1,6 +1,6 @@
 package com.invictusbytes.gemaries.di.fragment_modules
 
-import com.invictusbytes.gemaries.ui.all_clients.AllClientsFragment
+import com.invictusbytes.gemaries.ui.unassigned_clients.UnAssignedClientsFragment
 import com.invictusbytes.gemaries.ui.assigned_clients.AssignedClientsFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -11,7 +11,7 @@ import dagger.android.ContributesAndroidInjector
 abstract class FragmentClientsModule {
 
     @ContributesAndroidInjector
-    abstract fun contributeAllClientsFragment(): AllClientsFragment
+    abstract fun contributeAllClientsFragment(): UnAssignedClientsFragment
 
 
     @ContributesAndroidInjector

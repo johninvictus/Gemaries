@@ -13,14 +13,13 @@ interface CratesDao {
 
 
     @Query("SELECT * FROM Crates WHERE code = :code")
-    fun getCrateByCode(code: String): LiveData<CratesEntity>
+    fun getCrateByCode(code: String): CratesEntity?
 
 
     @Query("SELECT * FROM Crates ")
     fun getAllCrates(): LiveData<List<CratesEntity>>
 
 
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query(
         "SELECT * FROM Crates INNER JOIN Assigned " +
                 "ON Crates.id = Assigned.crate_id " +
@@ -29,7 +28,6 @@ interface CratesDao {
     fun getAssignedCrates(active: Boolean): LiveData<List<CratesEntity>>
 
 
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query(
         "SELECT c.id, c.code, c.created FROM Crates c " +
                 "LEFT JOIN  Assigned a " +
@@ -38,4 +36,39 @@ interface CratesDao {
                 "ORDER BY c.created DESC"
     )
     fun getUnAssignedCrates(active: Boolean): LiveData<List<CratesEntity>>
+
+
+    @Query(
+        "SELECT c.id, c.code, c.created FROM Crates c" +
+                " LEFT JOIN Assigned a " +
+                "ON (c.id = a.crate_id) " +
+                "WHERE (a.user_id = :userId)" +
+                " AND (a.active = :active)"
+    )
+    fun getUserAssignedCrates(userId: Long, active: Boolean): LiveData<List<CratesEntity>>
+
+
+    @Query(
+        "SELECT * FROM Crates c " +
+                "LEFT JOIN Assigned a " +
+                "ON c.id = a.crate_id " +
+                "WHERE a.active = :active " +
+                "AND c.code = :code"
+    )
+    fun getCrateIfAssigned(active: Boolean, code: String): CratesEntity?
+
+
+    @Query(
+        "SELECT * FROM Crates c" +
+                " LEFT JOIN Assigned a " +
+                "ON c.id = a.crate_id " +
+                "WHERE (a.active = :active)" +
+                " AND (c.code = :code) " +
+                "AND (a.user_id = :userId)"
+    )
+    fun getCrateIfAssignedToUser(active: Boolean, code: String, userId: Long): CratesEntity?
+
+
+    @Delete
+    fun deleteCrates(vararg cratesEntity: CratesEntity)
 }

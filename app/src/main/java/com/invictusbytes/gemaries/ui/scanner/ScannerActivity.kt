@@ -7,17 +7,19 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
 import android.view.View
-import androidx.lifecycle.Observer
 import com.google.zxing.Result
 import com.invictusbytes.gemaries.R
 import com.invictusbytes.gemaries.commons.BaseActivity
+import com.invictusbytes.gemaries.data.db.entities.Assigned
 import com.invictusbytes.gemaries.data.db.entities.CratesEntity
+import com.invictusbytes.gemaries.utils.AppExecutors
 import kotlinx.android.synthetic.main.activity_scanner.*
 import kotlinx.android.synthetic.main.toolbar.*
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.toast
 import java.util.*
+import javax.inject.Inject
 
 class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
 
@@ -26,11 +28,21 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
     private var scannerView: ZXingScannerView? = null
     private var flash: Boolean = false
 
+    private var state: String? = null
+    private var userId: Long? = null
+
+    @Inject
+    lateinit var appExecutors: AppExecutors
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scanner)
 
         viewModel = getViewModel(ScannerViewModel::class.java)
+
+
+        state = intent.getStringExtra(STATE)
+        userId = intent.getLongExtra(USER_ID, 0)
 
         setupToolbar()
         setupScanner()
@@ -39,8 +51,7 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
 
     private fun setupToolbar() {
         setSupportActionBar(toolbar)
-        supportActionBar?.title = "Scan Crate"
-
+        supportActionBar?.title = "Scanner"
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
@@ -54,6 +65,24 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
         ivFlash.setOnClickListener {
             toggleFlash()
         }
+
+
+
+        when (state) {
+            "Crate" -> {
+                supportActionBar?.title = "Scan Crate"
+            }
+
+            "Assign" -> {
+                supportActionBar?.title = "Assign Crate"
+            }
+
+            "UnAssign" -> {
+                supportActionBar?.title = "UnAssign Crate"
+            }
+
+        }
+
     }
 
 
@@ -79,23 +108,138 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
     }
 
     private fun addCrate(code: String) {
-        viewModel.getCrate(code).observe(this, Observer {
-            if (it != null) {
-                longToast("This crate is already added")
-                return@Observer
+        appExecutors.diskIO().execute {
+            val c = viewModel.getCrate(code)
+            if (c != null) {
+                appExecutors.mainThread().execute {
+                    longToast("This crate is already added")
+                }
+            } else {
+                val crate = CratesEntity(code = code, created = Date())
+                viewModel.addCrate(crate)
+
+                appExecutors.mainThread().execute {
+                    toast("You added this crate")
+                }
             }
-
-            val crate = CratesEntity(code = code, created = Date())
-            viewModel.addCrate(crate)
-
-            toast("You added this crate")
-        })
+        }
     }
+
+    private fun assignCrateToUser(code: String) {
+        /*
+        check if this crate is in the system
+        * check if this crate is not assigned
+        * then assign assign
+        * */
+        appExecutors.diskIO().execute {
+            val c = viewModel.getCrate(code)
+
+            // is available or not
+            if (c != null) {
+                // check it if it assigned to anyone
+                val assignedCrate = viewModel.getCrateIfAssigned(code)
+
+
+                if (assignedCrate == null) {
+                    // assign to a user
+                    val assign = Assigned(
+                        null, c.id!!,
+                        userId!!, true,
+                        Date(), Date()
+                    )
+
+
+                    viewModel.addAssigned(assign)
+                    appExecutors.mainThread().execute {
+                        longToast("This user as been assigned this crate")
+                    }
+
+                } else {
+                    appExecutors.mainThread().execute {
+                        longToast("This crate is already assigned to someone")
+                    }
+
+                }
+
+            } else {
+                appExecutors.mainThread().execute {
+                    longToast("This crate is not added to the app")
+                }
+            }
+        }
+
+    }
+
+    private fun unAssignCrateToUser(code: String) {
+        /*
+        * #steps
+        * - check if crate is added
+        * - check if crate is assigned to this guy
+        * - unassign crate
+        * */
+        appExecutors.diskIO().execute {
+            val c = viewModel.getCrate(code)
+
+            // is available or not
+            if (c != null) {
+                val crateAvailable = viewModel.getCrateIfAssignedToUser(code, userId!!)
+                if (crateAvailable != null) {
+                    val assigned = viewModel.getUserUnAssignedEntry(userId!!, c.id!!)
+
+                    assigned?.let {
+                        val modAssigned = Assigned(
+                            id = assigned.id,
+                            crateId = assigned.crateId,
+                            active = false,
+                            added = assigned.added,
+                            returned = Date(),
+                            userId = assigned.userId
+                        )
+
+                        viewModel.updateAssigned(modAssigned)
+
+                        appExecutors.mainThread().execute {
+                            longToast("You unassigned this crate")
+                        }
+                    }
+
+
+                } else {
+                    appExecutors.mainThread().execute {
+                        longToast("This crate is not assigned to this user")
+                    }
+                }
+            } else {
+                appExecutors.mainThread().execute {
+                    longToast("This crate is not added to the app")
+                }
+            }
+        }
+
+    }
+
 
     override fun handleResult(rawResult: Result) {
         showResult(rawResult.text)
         playBeep()
-        addCrate(rawResult.text)
+
+        when (state) {
+            "Crate" -> {
+                supportActionBar?.title = "Scan Crate"
+                addCrate(rawResult.text)
+            }
+
+            "Assign" -> {
+                supportActionBar?.title = "Assign Crate"
+                assignCrateToUser(rawResult.text)
+            }
+
+            "UnAssign" -> {
+                supportActionBar?.title = "UnAssign Crate"
+                unAssignCrateToUser(rawResult.text)
+            }
+
+        }
 
         Handler().postDelayed({
             scannerView?.resumeCameraPreview(this)
@@ -133,8 +277,14 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
 
 
     companion object {
-        fun startActivity(context: Context) {
-            context.startActivity(Intent(context, ScannerActivity::class.java))
+        const val STATE = "STATE"
+        const val USER_ID = "USER_ID"
+
+        fun startActivity(context: Context, state: String, user_id: Long) {
+            val intent = Intent(context, ScannerActivity::class.java)
+            intent.putExtra(STATE, state)
+            intent.putExtra(USER_ID, user_id)
+            context.startActivity(intent)
         }
     }
 }

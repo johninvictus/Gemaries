@@ -12,4 +12,8 @@ class AssignedViewModel @Inject constructor(var cratesRepository: CratesReposito
     fun assignedCrates(): LiveData<List<CratesEntity>> {
         return cratesRepository.getAssignedCrates()
     }
+
+    fun deleteCrate(crates: CratesEntity) {
+        cratesRepository.deleteCrate(crates)
+    }
 }

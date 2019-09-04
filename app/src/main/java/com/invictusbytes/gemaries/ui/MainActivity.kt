@@ -3,8 +3,10 @@ package com.invictusbytes.gemaries.ui
 import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.invictusbytes.gemaries.R
+import com.invictusbytes.gemaries.ui.assign_crate.AssignCrateActivity
 import com.invictusbytes.gemaries.ui.clients.ClientsActivity
 import com.invictusbytes.gemaries.ui.crates.CratesActivity
+import com.invictusbytes.gemaries.ui.unassign_crate.UnassignActivity
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -40,5 +42,16 @@ class MainActivity : DaggerAppCompatActivity() {
             ClientsActivity.startActivity(this)
             overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
         }
+
+        btnAssignCrate.setOnClickListener {
+            AssignCrateActivity.startActivity(this)
+            overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+        }
+
+        btnUnassignCrate.setOnClickListener {
+            UnassignActivity.startActivity(this)
+            overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
+        }
+
     }
 }

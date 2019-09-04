@@ -2,13 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentUnAssignedClients"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.assigned_clients.AssignedClientsFragment"
-    android:id="@+id/parentAssignedClients">
+    tools:context=".ui.unassigned_clients.UnAssignedClientsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/assignedClientRecycler"
+        android:id="@+id/unAssignedClientRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toRightOf="parent"

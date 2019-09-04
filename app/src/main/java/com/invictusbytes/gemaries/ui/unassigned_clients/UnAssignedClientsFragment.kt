@@ -1,4 +1,4 @@
-package com.invictusbytes.gemaries.ui.assigned
+package com.invictusbytes.gemaries.ui.unassigned_clients
 
 
 import android.os.Bundle
@@ -12,38 +12,33 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.invictusbytes.gemaries.R
-import com.invictusbytes.gemaries.adapters.CratesAdapter
+import com.invictusbytes.gemaries.adapters.ClientsAdapter
 import com.invictusbytes.gemaries.commons.BaseFragment
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_assigned.*
 import kotlinx.android.synthetic.main.fragment_assigned_clients.*
+import kotlinx.android.synthetic.main.fragment_unassigned_clients.*
 
 /**
  * A simple [Fragment] subclass.
  */
-class AssignedFragment : BaseFragment() {
+class UnAssignedClientsFragment : BaseFragment() {
 
-    lateinit var viewModel: AssignedViewModel
-    private lateinit var adapter: CratesAdapter
+    private lateinit var adapter: ClientsAdapter
+    private lateinit var viewModel: UnAssignedClientsViewModel
     val composable = CompositeDisposable()
-
-    companion object {
-        @JvmStatic
-        fun newInstance(): Fragment {
-            return AssignedFragment()
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_assigned, container, false)
+        return inflater.inflate(R.layout.fragment_unassigned_clients, container, false)
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = getViewModel(AssignedViewModel::class.java)
+        viewModel = getViewModel(UnAssignedClientsViewModel::class.java)
+
         operations()
     }
 
@@ -57,40 +52,25 @@ class AssignedFragment : BaseFragment() {
         composable.clear()
     }
 
-    private fun adapterClicks() {
-        /*
-       * listen to adapter clicks
-       * */
-        val lc =
-            adapter.crateItemLongClick.subscribe {
-                Snackbar.make(
-                    parentAssignedCrate,
-                    "Are you sure you want to delete?",
-                    Snackbar.LENGTH_SHORT
-                )
-                    .setAction("DELETE") { v ->
-                        viewModel.deleteCrate(it)
-                    }.show()
-            }
-
-        composable.add(lc)
-    }
-
     private fun operations() {
         setupAdapter()
 
-        viewModel.assignedCrates().observe(this, Observer {
+        /**
+         * get data from viewModel
+         * */
+        viewModel.getUnAssignedClients().observe(this, Observer {
             adapter.setData(ArrayList(it))
         })
+
     }
 
     private fun setupAdapter() {
-        adapter = CratesAdapter("assigned")
-        assignedRecycler.layoutManager = LinearLayoutManager(activity!!)
-        assignedRecycler.adapter = adapter
+        adapter = ClientsAdapter("assigned")
+        unAssignedClientRecycler.layoutManager = LinearLayoutManager(activity!!)
+        unAssignedClientRecycler.adapter = adapter
 
-        assignedRecycler.itemAnimator = DefaultItemAnimator()
-        assignedRecycler.addItemDecoration(
+        unAssignedClientRecycler.itemAnimator = DefaultItemAnimator()
+        unAssignedClientRecycler.addItemDecoration(
             DividerItemDecoration(
                 activity,
                 LinearLayoutManager.VERTICAL
@@ -98,5 +78,29 @@ class AssignedFragment : BaseFragment() {
         )
     }
 
+    private fun adapterClicks() {
+        /*
+       * listen to adapter clicks
+       * */
+        val lc =
+            adapter.clientItemLongClick.subscribe {
+                Snackbar.make(
+                    parentUnAssignedClients,
+                    "Are you sure you want to delete?",
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setAction("DELETE") { v ->
+                        viewModel.deleteClient(it)
+                    }.show()
+            }
 
+        composable.add(lc)
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(): Fragment {
+            return UnAssignedClientsFragment()
+        }
+    }
 }
