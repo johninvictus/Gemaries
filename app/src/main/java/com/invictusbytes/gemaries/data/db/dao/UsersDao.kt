@@ -16,7 +16,6 @@ interface UsersDao {
     fun getAllUsers(): LiveData<List<UsersEntity>>
 
 
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query(
         "SELECT * FROM users u " +
                 "LEFT JOIN Assigned a" +
@@ -27,7 +26,6 @@ interface UsersDao {
     )
     fun getUnAssignedUsers(active: Boolean): LiveData<List<UsersEntity>>
 
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query(
         "SELECT * FROM users u " +
                 "INNER JOIN Assigned a " +
@@ -37,7 +35,6 @@ interface UsersDao {
     fun getAssignedClients(active: Boolean): LiveData<List<UsersEntity>>
 
 
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("SELECT * FROM users WHERE id = :userId")
     fun getUserById(userId: Long): LiveData<UsersEntity>
 }

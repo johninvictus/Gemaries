@@ -13,9 +13,8 @@ class CratesRepository @Inject constructor(
 
 
     fun addCrate(crate: CratesEntity) {
-
         appExecutors.diskIO().execute {
-            this@CratesRepository.cratesDao.addCrate(crate)
+            cratesDao.addCrate(crate)
         }
     }
 

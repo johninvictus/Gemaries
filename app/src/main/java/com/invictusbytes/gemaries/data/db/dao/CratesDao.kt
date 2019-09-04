@@ -1,7 +1,10 @@
 package com.invictusbytes.gemaries.data.db.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.invictusbytes.gemaries.data.db.entities.CratesEntity
 
 
@@ -20,7 +23,6 @@ interface CratesDao {
     fun getAllCrates(): LiveData<List<CratesEntity>>
 
 
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query(
         "SELECT * FROM Crates INNER JOIN Assigned " +
                 "ON Crates.id = Assigned.crate_id " +
@@ -29,7 +31,6 @@ interface CratesDao {
     fun getAssignedCrates(active: Boolean): LiveData<List<CratesEntity>>
 
 
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query(
         "SELECT c.id, c.code, c.created FROM Crates c " +
                 "LEFT JOIN  Assigned a " +
@@ -40,16 +41,16 @@ interface CratesDao {
     fun getUnAssignedCrates(active: Boolean): LiveData<List<CratesEntity>>
 
 
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query(
-        "SELECT * FROM Crates c " +
-                "LEFT JOIN assigned a " +
-                "ON a.user_id = :userId" +
-                " WHERE a.active = :active"
+        "SELECT c.id, c.code, c.created FROM Crates c" +
+                " LEFT JOIN Assigned a " +
+                "ON (c.id = a.crate_id) " +
+                "WHERE (a.user_id = :userId)" +
+                " AND (a.active = :active)"
     )
     fun getUserAssignedCrates(userId: Long, active: Boolean): LiveData<List<CratesEntity>>
 
-    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+
     @Query(
         "SELECT * FROM Crates c " +
                 "LEFT JOIN Assigned a " +

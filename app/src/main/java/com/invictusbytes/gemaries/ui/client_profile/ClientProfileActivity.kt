@@ -101,7 +101,6 @@ class ClientProfileActivity : BaseActivity() {
     private fun populateProfileCard(client: UsersEntity) {
         tvUserName?.text = client.name
         tvUserPhone?.text = client.phone.toString()
-        numberAssignedCrates?.text = String.format("%d crates", 0)
     }
 
     private fun setupRecyclerView() {

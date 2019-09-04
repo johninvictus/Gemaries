@@ -71,7 +71,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginStart="5dp"
-                            tools:text="200 crates" />
+                            android:text="0 crates" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

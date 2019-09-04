@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.toast
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -139,7 +140,8 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
                 // check it if it assigned to anyone
                 val assignedCrate = viewModel.getCrateIfAssigned(code)
 
-                if (assignedCrate != null) {
+
+                if (assignedCrate == null) {
                     // assign to a user
                     val assign = Assigned(
                         null, c.id!!,
@@ -148,10 +150,16 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
                     )
 
 
-
+                    viewModel.addAssigned(assign)
+                    appExecutors.mainThread().execute {
+                        longToast("This user as been assigned this crate")
+                    }
 
                 } else {
-                    longToast("This crate is already assigned to someone")
+                    appExecutors.mainThread().execute {
+                        longToast("This crate is already assigned to someone")
+                    }
+
                 }
 
             } else {
@@ -172,6 +180,8 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
         showResult(rawResult.text)
         playBeep()
 
+        Timber.e(state)
+
         when (state) {
             "Crate" -> {
                 supportActionBar?.title = "Scan Crate"
@@ -184,8 +194,8 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
             }
 
             "UnAssign" -> {
-                supportActionBar?.title = "UnAssign Crate"
-                unAssignCrateToUser(rawResult.text)
+//                supportActionBar?.title = "UnAssign Crate"
+//                unAssignCrateToUser(rawResult.text)
             }
 
         }
