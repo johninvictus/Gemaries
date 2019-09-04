@@ -70,7 +70,7 @@ class AddClientFragmentDialog : DialogFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(): DialogFragment {
+        fun newInstance(): AddClientFragmentDialog {
             return AddClientFragmentDialog()
         }
     }
