@@ -3,6 +3,7 @@ package com.invictusbytes.gemaries.di.modules
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.invictusbytes.gemaries.di.qualifires.ViewModelKey
+import com.invictusbytes.gemaries.ui.assign_crate.AssignCrateViewModel
 import com.invictusbytes.gemaries.ui.assigned.AssignedViewModel
 import com.invictusbytes.gemaries.ui.assigned_clients.AssignedClientsViewModel
 import com.invictusbytes.gemaries.ui.clients.ClientsViewModel
@@ -56,6 +57,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AssignedClientsViewModel::class)
     abstract fun bindAssignedClientsViewModel(assignedClientsViewModel: AssignedClientsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AssignCrateViewModel::class)
+    abstract fun bindAssignCrateViewModel(assignCrateViewModel: AssignCrateViewModel): ViewModel
 
 
     @Binds
