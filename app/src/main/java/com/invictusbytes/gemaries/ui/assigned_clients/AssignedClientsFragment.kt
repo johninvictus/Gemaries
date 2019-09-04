@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +22,7 @@ class AssignedClientsFragment : BaseFragment() {
 
 
     private lateinit var adapter: ClientsAdapter
+    private lateinit var viewModel: AssignedClientsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +33,7 @@ class AssignedClientsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = getViewModel(AssignedClientsViewModel::class.java)
         operations()
     }
 
@@ -40,7 +43,9 @@ class AssignedClientsFragment : BaseFragment() {
         /**
          * get data from viewModel
          * */
-
+        viewModel.getAssignedClients().observe(this, Observer {
+            adapter.setData(ArrayList(it))
+        })
     }
 
     private fun setupAdapter() {

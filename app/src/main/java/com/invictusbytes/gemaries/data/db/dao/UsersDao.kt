@@ -21,4 +21,14 @@ interface UsersDao {
                 " ORDER BY u.created DESC"
     )
     fun getUnAssignedUsers(active: Boolean): LiveData<List<UsersEntity>>
+
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+    @Query(
+        "SELECT * FROM users u " +
+                "INNER JOIN Assigned a " +
+                "ON u.id = a.user_id " +
+                "AND a.active = :active"
+    )
+    fun getAssignedClients(active: Boolean): LiveData<List<UsersEntity>>
+
 }

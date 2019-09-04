@@ -7,7 +7,11 @@ import javax.inject.Inject
 
 class UsersRepository @Inject constructor(var usersDao: UsersDao) {
 
-    fun getUnAssignedClients(): LiveData<List<UsersEntity>>{
+    fun getUnAssignedClients(): LiveData<List<UsersEntity>> {
         return usersDao.getUnAssignedUsers(false)
+    }
+
+    fun getAssignedClients(): LiveData<List<UsersEntity>> {
+        return usersDao.getAssignedClients(true)
     }
 }
