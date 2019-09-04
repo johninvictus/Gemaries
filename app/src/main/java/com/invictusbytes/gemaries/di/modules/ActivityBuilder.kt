@@ -8,6 +8,7 @@ import com.invictusbytes.gemaries.ui.client_profile.ClientProfileActivity
 import com.invictusbytes.gemaries.ui.clients.ClientsActivity
 import com.invictusbytes.gemaries.ui.crates.CratesActivity
 import com.invictusbytes.gemaries.ui.scanner.ScannerActivity
+import com.invictusbytes.gemaries.ui.unassign_crate.UnassignActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -33,4 +34,7 @@ abstract class ActivityBuilder {
 
     @ContributesAndroidInjector
     internal abstract fun bindClientProfileActivity(): ClientProfileActivity
+
+    @ContributesAndroidInjector
+    internal abstract fun bindUnassignActivity(): UnassignActivity
 }

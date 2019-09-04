@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.client_profile.ClientProfileActivity"></activity>
+        <activity android:name=".ui.unassign_crate.UnassignActivity"></activity>
+        <activity android:name=".ui.client_profile.ClientProfileActivity" />
         <activity android:name=".ui.assign_crate.AssignCrateActivity" />
         <activity android:name=".ui.scanner.ScannerActivity" />
         <activity android:name=".ui.clients.ClientsActivity" />

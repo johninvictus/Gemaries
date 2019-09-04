@@ -10,6 +10,7 @@ import com.invictusbytes.gemaries.ui.client_profile.ClientProfileViewModel
 import com.invictusbytes.gemaries.ui.clients.ClientsViewModel
 import com.invictusbytes.gemaries.ui.crates.CratesViewModel
 import com.invictusbytes.gemaries.ui.scanner.ScannerViewModel
+import com.invictusbytes.gemaries.ui.unassign_crate.UnassignViewModel
 import com.invictusbytes.gemaries.ui.unassigned.UnassignedViewModel
 import com.invictusbytes.gemaries.ui.unassigned_clients.UnAssignedClientsViewModel
 import com.invictusbytes.gemaries.vo.GemariesViewModelFactory
@@ -69,6 +70,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ClientProfileViewModel::class)
     abstract fun bindClientProfileViewModel(clientProfileViewModel: ClientProfileViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(UnassignViewModel::class)
+    abstract fun bindUnassignViewModel(unassignViewModel: UnassignViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: GemariesViewModelFactory): ViewModelProvider.Factory
