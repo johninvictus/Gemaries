@@ -11,6 +11,10 @@ interface UsersDao {
     fun addUser(usersEntity: UsersEntity): Long
 
 
+    @Query("SELECT * FROM users")
+    fun getAllUsers(): LiveData<List<UsersEntity>>
+
+
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query(
         "SELECT * FROM users u " +

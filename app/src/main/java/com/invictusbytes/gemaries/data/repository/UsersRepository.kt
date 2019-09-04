@@ -15,6 +15,10 @@ class UsersRepository @Inject constructor(var usersDao: UsersDao, var appExecuto
         }
     }
 
+    fun getAllUsers(): LiveData<List<UsersEntity>> {
+        return usersDao.getAllUsers()
+    }
+
     fun getUnAssignedClients(): LiveData<List<UsersEntity>> {
         return usersDao.getUnAssignedUsers(false)
     }
