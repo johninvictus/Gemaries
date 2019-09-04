@@ -15,6 +15,10 @@ class UsersRepository @Inject constructor(var usersDao: UsersDao, var appExecuto
         }
     }
 
+    fun getUserById(userId: Long): LiveData<UsersEntity> {
+        return usersDao.getUserById(userId)
+    }
+
     fun getAllUsers(): LiveData<List<UsersEntity>> {
         return usersDao.getAllUsers()
     }

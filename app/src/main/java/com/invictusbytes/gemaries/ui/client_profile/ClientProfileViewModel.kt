@@ -4,5 +4,4 @@ import androidx.lifecycle.ViewModel
 import javax.inject.Inject
 
 class ClientProfileViewModel @Inject constructor() : ViewModel() {
-
 }

@@ -35,4 +35,10 @@ interface UsersDao {
     )
     fun getAssignedClients(active: Boolean): LiveData<List<UsersEntity>>
 
+
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+    @Query("SELECT * FROM users WHERE id = :userId")
+    fun getUserById(userId: Long): LiveData<UsersEntity>
+
+
 }
