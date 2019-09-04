@@ -1,8 +1,10 @@
 package com.invictusbytes.gemaries.data.db.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
-import com.invictusbytes.gemaries.data.db.entities.CratesEntity
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.invictusbytes.gemaries.data.db.entities.UsersEntity
 
 @Dao
@@ -27,10 +29,10 @@ interface UsersDao {
     fun getUnAssignedUsers(active: Boolean): LiveData<List<UsersEntity>>
 
     @Query(
-        "SELECT * FROM users u " +
-                "INNER JOIN Assigned a " +
-                "ON u.id = a.user_id " +
-                "AND a.active = :active"
+        "SELECT DISTINCT u.id, u.name, u.phone, u.created FROM users u " +
+                " JOIN Assigned a ON (u.id = a.user_id)" +
+                " WHERE  a.crate_id IS NOT NULL" +
+                " AND (a.active = :active)"
     )
     fun getAssignedClients(active: Boolean): LiveData<List<UsersEntity>>
 
