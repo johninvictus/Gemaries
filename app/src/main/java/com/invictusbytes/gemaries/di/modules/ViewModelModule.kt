@@ -6,6 +6,7 @@ import com.invictusbytes.gemaries.di.qualifires.ViewModelKey
 import com.invictusbytes.gemaries.ui.assign_crate.AssignCrateViewModel
 import com.invictusbytes.gemaries.ui.assigned.AssignedViewModel
 import com.invictusbytes.gemaries.ui.assigned_clients.AssignedClientsViewModel
+import com.invictusbytes.gemaries.ui.client_profile.ClientProfileViewModel
 import com.invictusbytes.gemaries.ui.clients.ClientsViewModel
 import com.invictusbytes.gemaries.ui.crates.CratesViewModel
 import com.invictusbytes.gemaries.ui.scanner.ScannerViewModel
@@ -63,6 +64,11 @@ abstract class ViewModelModule {
     @ViewModelKey(AssignCrateViewModel::class)
     abstract fun bindAssignCrateViewModel(assignCrateViewModel: AssignCrateViewModel): ViewModel
 
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ClientProfileViewModel::class)
+    abstract fun bindClientProfileViewModel(clientProfileViewModel: ClientProfileViewModel)
 
     @Binds
     abstract fun bindViewModelFactory(factory: GemariesViewModelFactory): ViewModelProvider.Factory

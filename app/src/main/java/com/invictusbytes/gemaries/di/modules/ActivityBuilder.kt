@@ -4,6 +4,7 @@ import com.invictusbytes.gemaries.di.fragment_modules.FragmentClientsModule
 import com.invictusbytes.gemaries.di.fragment_modules.FragmentCratesModule
 import com.invictusbytes.gemaries.ui.MainActivity
 import com.invictusbytes.gemaries.ui.assign_crate.AssignCrateActivity
+import com.invictusbytes.gemaries.ui.client_profile.ClientProfileActivity
 import com.invictusbytes.gemaries.ui.clients.ClientsActivity
 import com.invictusbytes.gemaries.ui.crates.CratesActivity
 import com.invictusbytes.gemaries.ui.scanner.ScannerActivity
@@ -29,4 +30,7 @@ abstract class ActivityBuilder {
 
     @ContributesAndroidInjector
     internal abstract fun bindAssignCrateActivity(): AssignCrateActivity
+
+    @ContributesAndroidInjector
+    internal abstract fun bindClientProfileActivity(): ClientProfileActivity
 }
