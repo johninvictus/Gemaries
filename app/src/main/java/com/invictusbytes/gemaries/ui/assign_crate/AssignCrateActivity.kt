@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.invictusbytes.gemaries.R
 import com.invictusbytes.gemaries.adapters.ClientsAdapter
 import com.invictusbytes.gemaries.commons.BaseActivity
+import com.invictusbytes.gemaries.data.db.entities.UsersEntity
+import com.invictusbytes.gemaries.ui.client_profile.ClientProfileActivity
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_assign_crate.*
 import kotlinx.android.synthetic.main.toolbar.*
 
@@ -18,6 +21,7 @@ class AssignCrateActivity : BaseActivity() {
 
     lateinit var viewModel: AssignCrateViewModel
     private lateinit var adapter: ClientsAdapter
+    private var disposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +73,31 @@ class AssignCrateActivity : BaseActivity() {
                 LinearLayoutManager.VERTICAL
             )
         )
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        /*
+        * adapter clicks
+        * */
+        adapterClickEvents()
+    }
+
+    private fun adapterClickEvents() {
+        val singleClick = adapter.clientItemClick.subscribe {
+            startProfileActivity(it)
+        }
+        disposable.add(singleClick)
+    }
+
+    private fun startProfileActivity(client: UsersEntity) {
+        ClientProfileActivity.startActivity(this, client.id!!, "Assign")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        disposable.clear()
     }
 
     override fun finish() {

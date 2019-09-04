@@ -14,7 +14,6 @@ class AddClientFragmentDialog : DialogFragment() {
 
     var clientDialogEvent = PublishSubject.create<Pair<String, Int>>()
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

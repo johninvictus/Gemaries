@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 
 class ClientProfileActivity : BaseActivity() {
 
-    private var userId: Int? = null
+    private var userId: Long? = null
     private var operation: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +18,7 @@ class ClientProfileActivity : BaseActivity() {
         setContentView(R.layout.activity_client_profile)
 
         if (intent.hasExtra(USER_ID) && intent.hasExtra(OPERATION)) {
-            userId = intent.getIntExtra(USER_ID, 0)
+            userId = intent.getLongExtra(USER_ID, 0)
             operation = intent.getStringExtra(OPERATION)
         }
 
@@ -45,7 +45,7 @@ class ClientProfileActivity : BaseActivity() {
         const val USER_ID = "USER_ID"
         const val OPERATION = "OPERATION"
 
-        fun startActivity(context: Context, userId: Int, operation: String) {
+        fun startActivity(context: Context, userId: Long, operation: String) {
             val intent = Intent(context, ClientProfileActivity::class.java)
             intent.putExtra(USER_ID, userId)
             intent.putExtra(OPERATION, operation)

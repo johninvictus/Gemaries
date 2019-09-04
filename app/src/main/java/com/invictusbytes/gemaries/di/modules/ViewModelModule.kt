@@ -68,7 +68,7 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(ClientProfileViewModel::class)
-    abstract fun bindClientProfileViewModel(clientProfileViewModel: ClientProfileViewModel)
+    abstract fun bindClientProfileViewModel(clientProfileViewModel: ClientProfileViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: GemariesViewModelFactory): ViewModelProvider.Factory
