@@ -38,4 +38,14 @@ interface CratesDao {
                 "ORDER BY c.created DESC"
     )
     fun getUnAssignedCrates(active: Boolean): LiveData<List<CratesEntity>>
+
+
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+    @Query(
+        "SELECT * FROM Crates c " +
+                "LEFT JOIN assigned a " +
+                "ON a.user_id = :userId" +
+                " WHERE a.active = :active"
+    )
+    fun getUserAssignedCrates(userId: Long, active: Boolean): LiveData<List<CratesEntity>>
 }

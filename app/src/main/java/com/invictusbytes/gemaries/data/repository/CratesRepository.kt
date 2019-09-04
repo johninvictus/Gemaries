@@ -19,7 +19,7 @@ class CratesRepository @Inject constructor(
         }
     }
 
-    fun getCrateByCode(code: String): CratesEntity?{
+    fun getCrateByCode(code: String): CratesEntity? {
         return cratesDao.getCrateByCode(code)
     }
 
@@ -34,4 +34,10 @@ class CratesRepository @Inject constructor(
     fun getUnAssignedCrates(): LiveData<List<CratesEntity>> {
         return cratesDao.getUnAssignedCrates(false)
     }
+
+    fun getUserAssignedCrates(userId: Long): LiveData<List<CratesEntity>> {
+        return cratesDao.getUserAssignedCrates(userId, true)
+    }
+
+
 }

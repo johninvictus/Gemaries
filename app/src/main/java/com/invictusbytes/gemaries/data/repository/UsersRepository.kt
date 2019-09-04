@@ -30,4 +30,6 @@ class UsersRepository @Inject constructor(var usersDao: UsersDao, var appExecuto
     fun getAssignedClients(): LiveData<List<UsersEntity>> {
         return usersDao.getAssignedClients(true)
     }
+
+
 }

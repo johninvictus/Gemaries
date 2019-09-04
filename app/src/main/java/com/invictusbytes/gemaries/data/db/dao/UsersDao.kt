@@ -2,6 +2,7 @@ package com.invictusbytes.gemaries.data.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.invictusbytes.gemaries.data.db.entities.CratesEntity
 import com.invictusbytes.gemaries.data.db.entities.UsersEntity
 
 @Dao
@@ -39,6 +40,4 @@ interface UsersDao {
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("SELECT * FROM users WHERE id = :userId")
     fun getUserById(userId: Long): LiveData<UsersEntity>
-
-
 }
