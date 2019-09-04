@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.toolbar.*
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.toast
-import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -172,6 +171,50 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
     }
 
     private fun unAssignCrateToUser(code: String) {
+        /*
+        * #steps
+        * - check if crate is added
+        * - check if crate is assigned to this guy
+        * - unassign crate
+        * */
+        appExecutors.diskIO().execute {
+            val c = viewModel.getCrate(code)
+
+            // is available or not
+            if (c != null) {
+                val crateAvailable = viewModel.getCrateIfAssignedToUser(code, userId!!)
+                if (crateAvailable != null) {
+                    val assigned = viewModel.getUserUnAssignedEntry(userId!!, c.id!!)
+
+                    assigned?.let {
+                        val modAssigned = Assigned(
+                            id = assigned.id,
+                            crateId = assigned.crateId,
+                            active = false,
+                            added = assigned.added,
+                            returned = Date(),
+                            userId = assigned.userId
+                        )
+
+                        viewModel.updateAssigned(modAssigned)
+
+                        appExecutors.mainThread().execute {
+                            longToast("You unassigned this crate")
+                        }
+                    }
+
+
+                } else {
+                    appExecutors.mainThread().execute {
+                        longToast("This crate is not assigned to this user")
+                    }
+                }
+            } else {
+                appExecutors.mainThread().execute {
+                    longToast("This crate is not added to the app")
+                }
+            }
+        }
 
     }
 
@@ -179,8 +222,6 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
     override fun handleResult(rawResult: Result) {
         showResult(rawResult.text)
         playBeep()
-
-        Timber.e(state)
 
         when (state) {
             "Crate" -> {
@@ -194,8 +235,8 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
             }
 
             "UnAssign" -> {
-//                supportActionBar?.title = "UnAssign Crate"
-//                unAssignCrateToUser(rawResult.text)
+                supportActionBar?.title = "UnAssign Crate"
+                unAssignCrateToUser(rawResult.text)
             }
 
         }

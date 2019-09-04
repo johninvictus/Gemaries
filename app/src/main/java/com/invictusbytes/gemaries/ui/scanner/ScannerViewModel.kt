@@ -28,4 +28,18 @@ class ScannerViewModel @Inject constructor(
     fun addAssigned(assigned: Assigned) {
         assignedRepository.addAssigned(assigned)
     }
+
+    fun getCrateIfAssignedToUser(code: String, userId: Long): CratesEntity? {
+        return cratesRepository.getCrateIfAssignedToUser(code, userId)
+    }
+
+
+    fun getUserUnAssignedEntry(userId: Long, crateId: Long): Assigned ?{
+        return assignedRepository.getUserUnAssignedEntry(userId, crateId)
+    }
+
+    fun updateAssigned(assigned: Assigned) {
+        assignedRepository.updateAssigned(assigned)
+    }
+
 }

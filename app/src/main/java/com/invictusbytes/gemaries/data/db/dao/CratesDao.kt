@@ -59,4 +59,15 @@ interface CratesDao {
                 "AND c.code = :code"
     )
     fun getCrateIfAssigned(active: Boolean, code: String): CratesEntity?
+
+
+    @Query(
+        "SELECT * FROM Crates c" +
+                " LEFT JOIN Assigned a " +
+                "ON c.id = a.crate_id " +
+                "WHERE (a.active = :active)" +
+                " AND (c.code = :code) " +
+                "AND (a.user_id = :userId)"
+    )
+    fun getCrateIfAssignedToUser(active: Boolean, code: String, userId: Long): CratesEntity?
 }

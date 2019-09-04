@@ -14,4 +14,14 @@ class AssignedRepository @Inject constructor(
             assignedDao.addEntry(assigned)
         }
     }
+
+    fun getUserUnAssignedEntry(userId: Long, crateId: Long): Assigned? {
+        return assignedDao.getUserUnAssignedEntry(userId, crateId, true)
+    }
+
+    fun updateAssigned(assigned: Assigned) {
+        appExecutors.diskIO().execute {
+            assignedDao.updateAssigned(assigned)
+        }
+    }
 }
