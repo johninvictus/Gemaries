@@ -11,12 +11,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.invictusbytes.gemaries.R
 import com.invictusbytes.gemaries.adapters.ClientsAdapter
+import com.invictusbytes.gemaries.commons.BaseFragment
 import kotlinx.android.synthetic.main.fragment_assigned_clients.*
 
 /**
  * A simple [Fragment] subclass.
  */
-class AssignedClientsFragment : Fragment() {
+class AssignedClientsFragment : BaseFragment() {
 
 
     private lateinit var adapter: ClientsAdapter
