@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:id="@+id/crateParent">
 
     <ImageView
         android:id="@+id/ivCrate"

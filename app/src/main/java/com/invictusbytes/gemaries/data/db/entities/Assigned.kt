@@ -12,13 +12,13 @@ import java.util.*
             entity = UsersEntity::class,
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("user_id"),
-            onDelete = ForeignKey.NO_ACTION
+            onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = CratesEntity::class,
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("crate_id"),
-            onDelete = ForeignKey.NO_ACTION
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )

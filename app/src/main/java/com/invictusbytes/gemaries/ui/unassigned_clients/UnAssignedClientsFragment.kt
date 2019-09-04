@@ -10,9 +10,12 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.invictusbytes.gemaries.R
 import com.invictusbytes.gemaries.adapters.ClientsAdapter
 import com.invictusbytes.gemaries.commons.BaseFragment
+import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.fragment_assigned_clients.*
 import kotlinx.android.synthetic.main.fragment_unassigned_clients.*
 
 /**
@@ -22,6 +25,7 @@ class UnAssignedClientsFragment : BaseFragment() {
 
     private lateinit var adapter: ClientsAdapter
     private lateinit var viewModel: UnAssignedClientsViewModel
+    val composable = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +40,16 @@ class UnAssignedClientsFragment : BaseFragment() {
         viewModel = getViewModel(UnAssignedClientsViewModel::class.java)
 
         operations()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adapterClicks()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        composable.clear()
     }
 
     private fun operations() {
@@ -62,6 +76,25 @@ class UnAssignedClientsFragment : BaseFragment() {
                 LinearLayoutManager.VERTICAL
             )
         )
+    }
+
+    private fun adapterClicks() {
+        /*
+       * listen to adapter clicks
+       * */
+        val lc =
+            adapter.clientItemLongClick.subscribe {
+                Snackbar.make(
+                    parentUnAssignedClients,
+                    "Are you sure you want to delete?",
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setAction("DELETE") { v ->
+                        viewModel.deleteClient(it)
+                    }.show()
+            }
+
+        composable.add(lc)
     }
 
     companion object {

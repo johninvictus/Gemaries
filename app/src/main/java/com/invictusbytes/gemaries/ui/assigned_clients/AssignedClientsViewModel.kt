@@ -12,4 +12,8 @@ class AssignedClientsViewModel @Inject constructor(var usersRepository: UsersRep
     fun getAssignedClients(): LiveData<List<UsersEntity>> {
         return usersRepository.getAssignedClients()
     }
+
+    fun deleteClient(user: UsersEntity) {
+        usersRepository.deleteUser(user)
+    }
 }

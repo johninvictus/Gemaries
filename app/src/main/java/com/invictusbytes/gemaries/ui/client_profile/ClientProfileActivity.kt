@@ -8,12 +8,15 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.invictusbytes.gemaries.R
 import com.invictusbytes.gemaries.adapters.CratesAdapter
 import com.invictusbytes.gemaries.commons.BaseActivity
 import com.invictusbytes.gemaries.data.db.entities.UsersEntity
 import com.invictusbytes.gemaries.ui.scanner.ScannerActivity
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_client_profile.*
+import kotlinx.android.synthetic.main.fragment_unassigned_clients.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class ClientProfileActivity : BaseActivity() {
@@ -23,6 +26,7 @@ class ClientProfileActivity : BaseActivity() {
 
     private lateinit var adapter: CratesAdapter
     private lateinit var viewModel: ClientProfileViewModel
+    val composable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +46,16 @@ class ClientProfileActivity : BaseActivity() {
 
         setupToolbar()
         operations()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adapterClicks()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        composable.clear()
     }
 
 
@@ -91,6 +105,25 @@ class ClientProfileActivity : BaseActivity() {
         fbUnAssignCrates.setOnClickListener {
             startScanner("UnAssign")
         }
+    }
+
+    private fun adapterClicks() {
+        /*
+       * listen to adapter clicks
+       * */
+        val lc =
+            adapter.crateItemLongClick.subscribe {
+                Snackbar.make(
+                    parentProfile,
+                    "Are you sure you want to delete?",
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setAction("DELETE") { v ->
+                        viewModel.deleteCrate(it)
+                    }.show()
+            }
+
+        composable.add(lc)
     }
 
     private fun startScanner(state: String) {

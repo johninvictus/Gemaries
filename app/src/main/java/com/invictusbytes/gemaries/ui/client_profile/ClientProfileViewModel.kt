@@ -40,5 +40,7 @@ class ClientProfileViewModel @Inject constructor(
         return _crates
     }
 
-
+    fun deleteCrate(crates: CratesEntity) {
+        cratesRepository.deleteCrate(crates)
+    }
 }

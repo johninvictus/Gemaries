@@ -1,10 +1,7 @@
 package com.invictusbytes.gemaries.data.db.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.invictusbytes.gemaries.data.db.entities.UsersEntity
 
 @Dao
@@ -39,4 +36,8 @@ interface UsersDao {
 
     @Query("SELECT * FROM users WHERE id = :userId")
     fun getUserById(userId: Long): LiveData<UsersEntity>
+
+
+    @Delete
+    fun deleteUsers(vararg usersEntity: UsersEntity)
 }

@@ -34,7 +34,7 @@ class UnassignActivity : BaseActivity() {
 
     private fun setupToolbar() {
         setSupportActionBar(toolbar)
-        supportActionBar?.title = "All clients"
+        supportActionBar?.title = "Assigned clients"
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }

@@ -46,4 +46,10 @@ class CratesRepository @Inject constructor(
         return cratesDao.getCrateIfAssignedToUser(true, code, userId)
     }
 
+    fun deleteCrate(crate: CratesEntity) {
+        appExecutors.diskIO().execute {
+            cratesDao.deleteCrates(crate)
+        }
+    }
+
 }

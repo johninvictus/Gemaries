@@ -1,10 +1,7 @@
 package com.invictusbytes.gemaries.data.db.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.invictusbytes.gemaries.data.db.entities.CratesEntity
 
 
@@ -70,4 +67,8 @@ interface CratesDao {
                 "AND (a.user_id = :userId)"
     )
     fun getCrateIfAssignedToUser(active: Boolean, code: String, userId: Long): CratesEntity?
+
+
+    @Delete
+    fun deleteCrates(vararg cratesEntity: CratesEntity)
 }
