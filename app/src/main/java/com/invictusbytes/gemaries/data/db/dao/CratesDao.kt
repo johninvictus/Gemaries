@@ -48,4 +48,14 @@ interface CratesDao {
                 " WHERE a.active = :active"
     )
     fun getUserAssignedCrates(userId: Long, active: Boolean): LiveData<List<CratesEntity>>
+
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+    @Query(
+        "SELECT * FROM Crates c " +
+                "LEFT JOIN Assigned a " +
+                "ON c.id = a.crate_id " +
+                "WHERE a.active = :active " +
+                "AND c.code = :code"
+    )
+    fun getCrateIfAssigned(active: Boolean, code: String): CratesEntity?
 }

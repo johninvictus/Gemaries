@@ -39,5 +39,8 @@ class CratesRepository @Inject constructor(
         return cratesDao.getUserAssignedCrates(userId, true)
     }
 
+    fun getCrateIfAssigned(code: String): CratesEntity? {
+        return cratesDao.getCrateIfAssigned(true, code)
+    }
 
 }

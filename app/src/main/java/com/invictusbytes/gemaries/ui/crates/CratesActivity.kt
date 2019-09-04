@@ -72,7 +72,7 @@ class CratesActivity : BaseActivity() {
             .withPermission(Manifest.permission.CAMERA)
             .withListener(object : PermissionListener {
                 override fun onPermissionGranted(response: PermissionGrantedResponse) {
-                    ScannerActivity.startActivity(this@CratesActivity)
+                    ScannerActivity.startActivity(this@CratesActivity, "Crate", 0L)
                     overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
                 }
 

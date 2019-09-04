@@ -12,6 +12,7 @@ import com.invictusbytes.gemaries.R
 import com.invictusbytes.gemaries.adapters.CratesAdapter
 import com.invictusbytes.gemaries.commons.BaseActivity
 import com.invictusbytes.gemaries.data.db.entities.UsersEntity
+import com.invictusbytes.gemaries.ui.scanner.ScannerActivity
 import kotlinx.android.synthetic.main.activity_client_profile.*
 import kotlinx.android.synthetic.main.toolbar.*
 
@@ -84,12 +85,17 @@ class ClientProfileActivity : BaseActivity() {
          * click fab
          * */
         fbAssignCrates.setOnClickListener {
-
+            startScanner("Assign")
         }
 
         fbUnAssignCrates.setOnClickListener {
-
+            startScanner("UnAssign")
         }
+    }
+
+    private fun startScanner(state: String) {
+        ScannerActivity.startActivity(this, state, userId!!)
+        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
     }
 
     private fun populateProfileCard(client: UsersEntity) {

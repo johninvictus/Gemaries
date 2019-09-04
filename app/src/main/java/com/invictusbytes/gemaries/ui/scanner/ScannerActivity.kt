@@ -10,6 +10,7 @@ import android.view.View
 import com.google.zxing.Result
 import com.invictusbytes.gemaries.R
 import com.invictusbytes.gemaries.commons.BaseActivity
+import com.invictusbytes.gemaries.data.db.entities.Assigned
 import com.invictusbytes.gemaries.data.db.entities.CratesEntity
 import com.invictusbytes.gemaries.utils.AppExecutors
 import kotlinx.android.synthetic.main.activity_scanner.*
@@ -27,6 +28,8 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
     private var scannerView: ZXingScannerView? = null
     private var flash: Boolean = false
 
+    private var state: String? = null
+    private var userId: Long? = null
 
     @Inject
     lateinit var appExecutors: AppExecutors
@@ -37,6 +40,10 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
 
         viewModel = getViewModel(ScannerViewModel::class.java)
 
+
+        state = intent.getStringExtra(STATE)
+        userId = intent.getLongExtra(USER_ID, 0)
+
         setupToolbar()
         setupScanner()
         operations()
@@ -44,8 +51,7 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
 
     private fun setupToolbar() {
         setSupportActionBar(toolbar)
-        supportActionBar?.title = "Scan Crate"
-
+        supportActionBar?.title = "Scanner"
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
@@ -59,6 +65,24 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
         ivFlash.setOnClickListener {
             toggleFlash()
         }
+
+
+
+        when (state) {
+            "Crate" -> {
+                supportActionBar?.title = "Scan Crate"
+            }
+
+            "Assign" -> {
+                supportActionBar?.title = "Assign Crate"
+            }
+
+            "UnAssign" -> {
+                supportActionBar?.title = "UnAssign Crate"
+            }
+
+        }
+
     }
 
 
@@ -101,10 +125,70 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
         }
     }
 
+    private fun assignCrateToUser(code: String) {
+        /*
+        check if this crate is in the system
+        * check if this crate is not assigned
+        * then assign assign
+        * */
+        appExecutors.diskIO().execute {
+            val c = viewModel.getCrate(code)
+
+            // is available or not
+            if (c != null) {
+                // check it if it assigned to anyone
+                val assignedCrate = viewModel.getCrateIfAssigned(code)
+
+                if (assignedCrate != null) {
+                    // assign to a user
+                    val assign = Assigned(
+                        null, c.id!!,
+                        userId!!, true,
+                        Date(), Date()
+                    )
+
+
+
+
+                } else {
+                    longToast("This crate is already assigned to someone")
+                }
+
+            } else {
+                appExecutors.mainThread().execute {
+                    longToast("This crate is not added to the app")
+                }
+            }
+        }
+
+    }
+
+    private fun unAssignCrateToUser(code: String) {
+
+    }
+
+
     override fun handleResult(rawResult: Result) {
         showResult(rawResult.text)
         playBeep()
-        addCrate(rawResult.text)
+
+        when (state) {
+            "Crate" -> {
+                supportActionBar?.title = "Scan Crate"
+                addCrate(rawResult.text)
+            }
+
+            "Assign" -> {
+                supportActionBar?.title = "Assign Crate"
+                assignCrateToUser(rawResult.text)
+            }
+
+            "UnAssign" -> {
+                supportActionBar?.title = "UnAssign Crate"
+                unAssignCrateToUser(rawResult.text)
+            }
+
+        }
 
         Handler().postDelayed({
             scannerView?.resumeCameraPreview(this)
@@ -142,8 +226,14 @@ class ScannerActivity : BaseActivity(), ZXingScannerView.ResultHandler {
 
 
     companion object {
-        fun startActivity(context: Context) {
-            context.startActivity(Intent(context, ScannerActivity::class.java))
+        const val STATE = "STATE"
+        const val USER_ID = "USER_ID"
+
+        fun startActivity(context: Context, state: String, user_id: Long) {
+            val intent = Intent(context, ScannerActivity::class.java)
+            intent.putExtra(STATE, state)
+            intent.putExtra(USER_ID, user_id)
+            context.startActivity(intent)
         }
     }
 }
