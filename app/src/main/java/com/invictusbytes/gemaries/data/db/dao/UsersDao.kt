@@ -20,5 +20,5 @@ interface UsersDao {
                 " OR a.active = :active" +
                 " ORDER BY u.created DESC"
     )
-    fun getUnAssignedUsers(active: Boolean): LiveData<UsersEntity>
+    fun getUnAssignedUsers(active: Boolean): LiveData<List<UsersEntity>>
 }
