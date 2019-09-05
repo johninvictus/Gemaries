@@ -1,9 +1,12 @@
 package com.invictusbytes.gemaries.ui.unassign_crate
 
+import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -46,6 +49,46 @@ class UnassignActivity : BaseActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.un_assign_crate_menu, menu);
+        val searchItem = menu?.findItem(R.id.action_search)
+
+        val searchManager = this.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+
+        var searchView: SearchView? = null
+        if (searchItem != null) {
+            searchView = searchItem.actionView as SearchView
+        }
+
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+
+                if (query.isNullOrEmpty()) {
+                    adapter.filterData("")
+                } else {
+                    adapter.filterData(query)
+                }
+
+                if (searchView.isIconified) {
+                    searchView.isIconified = true
+                }
+                searchItem?.collapseActionView()
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()) {
+                    adapter.filterData("")
+                } else {
+                    adapter.filterData(newText)
+                }
+                return false
+            }
+        })
+        return super.onCreateOptionsMenu(menu)
     }
 
     private fun operations() {

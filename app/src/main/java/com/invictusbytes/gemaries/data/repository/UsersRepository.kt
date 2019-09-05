@@ -2,7 +2,6 @@ package com.invictusbytes.gemaries.data.repository
 
 import androidx.lifecycle.LiveData
 import com.invictusbytes.gemaries.data.db.dao.UsersDao
-import com.invictusbytes.gemaries.data.db.entities.CratesEntity
 import com.invictusbytes.gemaries.data.db.entities.UsersEntity
 import com.invictusbytes.gemaries.utils.AppExecutors
 import javax.inject.Inject
@@ -32,9 +31,7 @@ class UsersRepository @Inject constructor(var usersDao: UsersDao, var appExecuto
         return usersDao.getAssignedClients(true)
     }
 
-    fun deleteUser(usersEntity: UsersEntity){
-        appExecutors.diskIO().execute {
-            usersDao.deleteUsers(usersEntity)
-        }
+    fun deleteUser(user: UsersEntity) {
+        usersDao.deleteUsers(user.phone)
     }
 }

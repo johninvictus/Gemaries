@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.common.base.Predicate
+import com.google.common.collect.Iterables
 import com.invictusbytes.gemaries.R
 import com.invictusbytes.gemaries.data.db.entities.UsersEntity
 import io.reactivex.subjects.PublishSubject
@@ -17,9 +19,24 @@ class ClientsAdapter(state: String) : RecyclerView.Adapter<ClientsAdapter.ViewHo
     val clientItemLongClick = PublishSubject.create<UsersEntity>()
 
     private val clients: ArrayList<UsersEntity> = ArrayList()
+    private val clientsTemp: ArrayList<UsersEntity> = ArrayList()
+
+
     fun setData(data: ArrayList<UsersEntity>) {
         clients.clear()
         clients.addAll(data)
+        clientsTemp.addAll(data)
+        notifyDataSetChanged()
+    }
+
+    fun filterData(value: String) {
+        clients.clear()
+        clients.addAll(clientsTemp)
+        
+        Iterables.removeIf(clients, Predicate { input ->
+            return@Predicate !input!!.name.toLowerCase().contains(value.toLowerCase())
+
+        })
         notifyDataSetChanged()
     }
 
