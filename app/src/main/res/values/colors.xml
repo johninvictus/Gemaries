@@ -9,4 +9,6 @@
 
     <color name="grey_500">#9e9e9e</color>
     <color name="grey_700">#616161</color>
+
+    <color name="semi_white">#74F5F2F2</color>
 </resources>

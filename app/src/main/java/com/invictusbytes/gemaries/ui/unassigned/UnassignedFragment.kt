@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -16,7 +17,6 @@ import com.invictusbytes.gemaries.adapters.CratesAdapter
 import com.invictusbytes.gemaries.commons.BaseFragment
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_unassigned.*
-import kotlinx.android.synthetic.main.fragment_unassigned_clients.*
 
 
 class UnassignedFragment : BaseFragment() {
@@ -65,7 +65,7 @@ class UnassignedFragment : BaseFragment() {
         val lc =
             adapter.crateItemLongClick.subscribe {
                 Snackbar.make(
-                    parentUnAssignedClients,
+                    parentUnAssignedCrates,
                     "Are you sure you want to delete?",
                     Snackbar.LENGTH_SHORT
                 )
@@ -85,6 +85,29 @@ class UnassignedFragment : BaseFragment() {
         * */
         viewModel.unAssignedCrates().observe(this, Observer {
             adapter.setData(ArrayList(it))
+        })
+
+        /*
+        * search
+        * */
+        unAssignedSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query.isNullOrEmpty()) {
+                    adapter.filterData("")
+                } else {
+                    adapter.filterData(query)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()) {
+                    adapter.filterData("")
+                } else {
+                    adapter.filterData(newText)
+                }
+                return false
+            }
         })
     }
 

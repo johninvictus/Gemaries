@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -16,6 +17,7 @@ import com.invictusbytes.gemaries.adapters.ClientsAdapter
 import com.invictusbytes.gemaries.commons.BaseFragment
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_assigned_clients.*
+import kotlinx.android.synthetic.main.fragment_unassigned_clients.*
 
 /**
  * A simple [Fragment] subclass.
@@ -50,6 +52,28 @@ class AssignedClientsFragment : BaseFragment() {
             adapter.setData(ArrayList(it))
         })
 
+        /*
+        * search
+        * */
+        assignedClientSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query.isNullOrEmpty()) {
+                    adapter.filterData("")
+                } else {
+                    adapter.filterData(query)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()) {
+                    adapter.filterData("")
+                } else {
+                    adapter.filterData(newText)
+                }
+                return false
+            }
+        })
 
     }
 
