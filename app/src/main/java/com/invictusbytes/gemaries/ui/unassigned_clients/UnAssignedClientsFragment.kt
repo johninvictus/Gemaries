@@ -17,7 +17,6 @@ import com.invictusbytes.gemaries.adapters.ClientsAdapter
 import com.invictusbytes.gemaries.commons.BaseFragment
 import com.invictusbytes.gemaries.utils.AppExecutors
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_unassigned.*
 import kotlinx.android.synthetic.main.fragment_unassigned_clients.*
 import javax.inject.Inject
 
@@ -66,6 +65,12 @@ class UnAssignedClientsFragment : BaseFragment() {
          * */
         viewModel.getUnAssignedClients().observe(this, Observer {
             adapter.setData(ArrayList(it))
+
+            if (it.isEmpty()) {
+                tvUnAssignedClients.visibility = View.VISIBLE
+            } else {
+                tvUnAssignedClients.visibility = View.GONE
+            }
         })
 
 

@@ -54,8 +54,8 @@ class CratesActivity : BaseActivity() {
 
     private fun setupViewPager() {
         val pagerAdapter = ViewPagerAdapter(supportFragmentManager)
-        pagerAdapter.addFragment("Assigned", AssignedFragment.newInstance())
         pagerAdapter.addFragment("Unassigned", UnassignedFragment.newInstance())
+        pagerAdapter.addFragment("Assigned", AssignedFragment.newInstance())
 
         viewPager.adapter = pagerAdapter
     }

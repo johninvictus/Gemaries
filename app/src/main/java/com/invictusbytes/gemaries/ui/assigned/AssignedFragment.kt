@@ -74,6 +74,12 @@ class AssignedFragment : BaseFragment() {
 
         viewModel.assignedCrates().observe(this, Observer {
             adapter.setData(ArrayList(it))
+
+            if(it.isEmpty()){
+                tvCratesAssigned.visibility = View.VISIBLE
+            }else {
+                tvCratesAssigned.visibility = View.GONE
+            }
         })
 
         /*

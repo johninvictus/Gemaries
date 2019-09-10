@@ -1,6 +1,7 @@
 package com.invictusbytes.gemaries.ui.assigned_clients
 
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -50,6 +51,12 @@ class AssignedClientsFragment : BaseFragment() {
          * */
         viewModel.getAssignedClients().observe(this, Observer {
             adapter.setData(ArrayList(it))
+
+            if(it.isEmpty()){
+                tvAssignedClients.visibility = View.VISIBLE
+            }else {
+                tvAssignedClients.visibility = View.GONE
+            }
         })
 
         /*
