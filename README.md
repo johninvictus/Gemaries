@@ -9,4 +9,5 @@ This app is used to scan bread crates and assigning or un assigning them against
 - Prevent loss of creates
 - Truck the number of crates given
 
-![](images/image1.png?raw=true =150x)
+
+<img src="images/image1.png" width="200">
