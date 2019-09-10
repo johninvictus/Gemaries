@@ -9,14 +9,8 @@ This app is used to scan bread crates and assigning or un assigning them against
 - Prevent loss of creates
 - Track the number of crates given
 
-<div style="display: inline; position: relative; width: 100%;">
- <div style="width: 30%; height: auto;">
-    <img src="images/image1.png" width="200">
- </div>
- <div style="width: 30%; height: auto;">
-     <img src="images/image2.png" width="200">
-  </div>
-</div>
+
+<div style="display: inline; position: relative;">
 <img src="images/image1.png" width="200">
 <img src="images/image2.png" width="200">
 <img src="images/image3.png" width="200">
@@ -25,3 +19,4 @@ This app is used to scan bread crates and assigning or un assigning them against
 <img src="images/image6.png" width="200">
 <img src="images/image7.png" width="200">
 <img src="images/image8.png" width="200">
+</div>
