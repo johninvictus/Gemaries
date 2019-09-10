@@ -85,6 +85,12 @@ class UnassignedFragment : BaseFragment() {
         * */
         viewModel.unAssignedCrates().observe(this, Observer {
             adapter.setData(ArrayList(it))
+
+            if (it.isEmpty()) {
+                tvNoUnassignedCrates.visibility = View.VISIBLE
+            } else {
+                tvNoUnassignedCrates.visibility = View.GONE
+            }
         })
 
         /*

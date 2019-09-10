@@ -10,10 +10,13 @@ import com.invictusbytes.gemaries.data.db.entities.UsersEntity
 import com.invictusbytes.gemaries.ui.assigned_clients.AssignedClientsFragment
 import com.invictusbytes.gemaries.ui.dialogs.AddClientFragmentDialog
 import com.invictusbytes.gemaries.ui.unassigned_clients.UnAssignedClientsFragment
+import com.invictusbytes.gemaries.utils.AppExecutors
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_clients.*
 import kotlinx.android.synthetic.main.toolbar.*
+import org.jetbrains.anko.toast
 import java.util.*
+import javax.inject.Inject
 
 class ClientsActivity : BaseActivity() {
 
@@ -21,6 +24,9 @@ class ClientsActivity : BaseActivity() {
     lateinit var viewModel: ClientsViewModel
     private lateinit var dialog: AddClientFragmentDialog
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
+
+    @Inject
+    lateinit var appExecutors: AppExecutors
 
     companion object {
         fun startActivity(context: Context) {
@@ -52,8 +58,9 @@ class ClientsActivity : BaseActivity() {
 
     private fun setupViewPager() {
         val pagerAdapter = ViewPagerAdapter(supportFragmentManager)
-        pagerAdapter.addFragment("Assigned", AssignedClientsFragment.newInstance())
+
         pagerAdapter.addFragment("Unassigned", UnAssignedClientsFragment.newInstance())
+        pagerAdapter.addFragment("Assigned", AssignedClientsFragment.newInstance())
 
         viewPagerClients.adapter = pagerAdapter
     }
@@ -68,13 +75,30 @@ class ClientsActivity : BaseActivity() {
     private fun listenDialog() {
         val event =
             dialog.clientDialogEvent.subscribe {
-                viewModel.addClient(
-                    UsersEntity(
-                        name = it.first,
-                        phone = it.second,
-                        created = Date()
-                    )
-                )
+
+                appExecutors.diskIO().execute {
+                    val u = viewModel.getUserByPhone(it.second)
+
+                    if (u == null) {
+                        viewModel.addClient(
+                            UsersEntity(
+                                name = it.first,
+                                phone = it.second,
+                                created = Date()
+                            )
+                        )
+
+                        appExecutors.mainThread().execute {
+                            toast("client added successfully")
+                        }
+
+                    } else {
+                        appExecutors.mainThread().execute {
+                            toast("Sorry, the client is using an existing phone number.")
+                        }
+                    }
+
+                }
             }
 
         compositeDisposable.add(event)

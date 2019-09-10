@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -100,6 +101,11 @@ class AssignCrateActivity : BaseActivity() {
         viewModel.getAllClients()
             .observe(this, Observer {
                 adapter.setData(ArrayList(it))
+                if (it.isEmpty()) {
+                    assignCrate.visibility = View.VISIBLE
+                } else {
+                    assignCrate.visibility = View.GONE
+                }
             })
     }
 

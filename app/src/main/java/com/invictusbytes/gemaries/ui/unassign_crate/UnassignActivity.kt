@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -100,6 +101,11 @@ class UnassignActivity : BaseActivity() {
         viewModel.getAssignedClients()
             .observe(this, Observer {
                 adapter.setData(ArrayList(it))
+                if (it.isEmpty()) {
+                    unassignClient.visibility = View.VISIBLE
+                } else {
+                    unassignClient.visibility = View.GONE
+                }
             })
     }
 

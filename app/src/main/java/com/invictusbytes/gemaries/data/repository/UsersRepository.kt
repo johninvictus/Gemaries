@@ -34,4 +34,8 @@ class UsersRepository @Inject constructor(var usersDao: UsersDao, var appExecuto
     fun deleteUser(user: UsersEntity) {
         usersDao.deleteUsers(user.phone)
     }
+
+    fun getUserByPhone(phone: Int): UsersEntity? {
+        return usersDao.getUserByPhone(phone)
+    }
 }

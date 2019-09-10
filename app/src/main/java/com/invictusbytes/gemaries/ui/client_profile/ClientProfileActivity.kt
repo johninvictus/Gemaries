@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -93,6 +94,12 @@ class ClientProfileActivity : BaseActivity() {
          * */
         viewModel.getCrates().observe(this, Observer {
             adapter.setData(ArrayList(it))
+
+            if (it.isEmpty()) {
+                profileAssignedCrates.visibility = View.VISIBLE
+            } else {
+                profileAssignedCrates.visibility = View.GONE
+            }
 
             numberAssignedCrates?.text = String.format("%d crates", it.size)
         })

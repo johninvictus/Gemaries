@@ -43,4 +43,7 @@ interface UsersDao {
 
     @Query("DELETE FROM users WHERE phone = :phone")
     fun deleteUsers(phone: Int)
+
+    @Query("SELECT * FROM users WHERE phone = :phone")
+    fun getUserByPhone(phone: Int): UsersEntity?
 }
