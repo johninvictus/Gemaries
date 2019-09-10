@@ -7,7 +7,7 @@ This app is used to scan bread crates and assigning or un assigning them against
 ## Objective
 
 - Prevent loss of creates
-- Truck the number of crates given
+- Track the number of crates given
 
 
 <img src="images/image1.png" width="200">
